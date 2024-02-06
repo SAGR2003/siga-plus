@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "432f71df-867f-4c13-bbce-9a5a50cbc1e7",
+		"name": "SigaPlus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25958909"
+	},
+	"item": [
+		{
+			"name": "Get student by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/students/123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"students",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 123,\r\n    \"name\": \"Sergio Roa\",\r\n    \"semester\": 7\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
