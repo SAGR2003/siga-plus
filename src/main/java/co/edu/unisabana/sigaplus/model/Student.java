@@ -3,7 +3,7 @@ package co.edu.unisabana.sigaplus.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
+@Entity
 @Data
 public class Student {
     @Id
@@ -14,3 +14,4 @@ public class Student {
 
     private int semester;
 }
+
