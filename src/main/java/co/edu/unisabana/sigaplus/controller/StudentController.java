@@ -1,5 +1,6 @@
 package co.edu.unisabana.sigaplus.controller;
 
+import co.edu.unisabana.sigaplus.controller.dto.ListStudentsResponseDTO;
 import co.edu.unisabana.sigaplus.controller.dto.StudentResponseDTO;
 import co.edu.unisabana.sigaplus.model.Student;
 import co.edu.unisabana.sigaplus.service.IStudent;
@@ -21,6 +22,11 @@ public class StudentController {
                 student.getName(),
                 student.getSemester()
         );
+    }
+
+    @GetMapping("")
+    private ListStudentsResponseDTO getStudents(){
+        return new ListStudentsResponseDTO(studentService.getAllStudents());
     }
 
     @PostMapping("")

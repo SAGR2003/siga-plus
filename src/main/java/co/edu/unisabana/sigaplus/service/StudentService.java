@@ -7,6 +7,8 @@ import co.edu.unisabana.sigaplus.service.exception.StudentNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class StudentService implements IStudent{
@@ -28,5 +30,10 @@ public class StudentService implements IStudent{
         } else {
             throw new StudentNotFoundException(id);
         }
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 }
