@@ -1,4 +1,4 @@
-FROM openjdk:19-alpine
+FROM openjdk:21
 
 COPY build/libs/sigaplus-0.0.1-SNAPSHOT.jar /app/sigaplus.jar
 

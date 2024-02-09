@@ -5,6 +5,7 @@ import co.edu.unisabana.sigaplus.repository.StudentRepository;
 import co.edu.unisabana.sigaplus.service.exception.StudentIdAlreadyExistsException;
 import co.edu.unisabana.sigaplus.service.exception.StudentNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StudentService implements IStudent{
+    @Autowired
     private StudentRepository studentRepository;
 
     @Override
@@ -37,3 +39,4 @@ public class StudentService implements IStudent{
         return studentRepository.findAll();
     }
 }
+

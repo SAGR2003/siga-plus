@@ -40,4 +40,9 @@ public class StudentController {
         );
     }
 
+    @GetMapping("/heartbeat")
+    private String heartbeat(){
+        return "OK :)";
+    }
+
 }
