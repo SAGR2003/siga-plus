@@ -8,21 +8,24 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-      - uses: actions/checkout@v3
         with:
           persist-credentials: false
           fetch-depth: 0
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
           java-version: '21'
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2.9.0
+
       - name: Execute Gradle build
         run: |
           chmod +x ./gradlew
           ./gradlew bootJar
+
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image
         with:
@@ -32,23 +35,23 @@ jobs:
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
+
       - name: Update version in helm repo
         run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
           git clone https://github.com/SAGR2003/helm-sigaplus.git
           cd helm-sigaplus/helm
-          sed -i "s/APP_VERSION:$((${{ secrets.APP_VERSION }} - 1))/APP_VERSION: ${{ secrets.APP_VERSION }}/" values.yaml
-          git add values.yaml
-          git commit -m "Update APP_VERSION"
-          git push origin master
+          sed -i "s/APP_VERSION: .*/APP_VERSION: ${{ secrets.APP_VERSION }}/" values.yaml
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
       - name: Commit and Push Changes
         uses: actions-js/push@master
         with:
           directory: helm-sigaplus
-          github_token: ${{ secrets.REPO_TOKEN }}
+          github_token: ${{ secrets.SIGAPLUS_TOKEN }}
           repository: SAGR2003/helm-sigaplus
-          message: Update app version to ${{ secrets.APP_VERSION }}
+          message: Version updated
+
       - name: Update app version secret
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
