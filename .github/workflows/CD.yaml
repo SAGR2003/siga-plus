@@ -34,14 +34,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASS }}
       - name: Update version in helm repo
         run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
           git clone https://github.com/SAGR2003/helm-sigaplus.git
           cd helm-sigaplus/helm
           sed -i "s/APP_VERSION:$((${{ secrets.APP_VERSION }} - 1))/APP_VERSION: ${{ secrets.APP_VERSION }}/" values.yaml
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
           git add values.yaml
-          git commit -m "Update APP_VERSION to ${{ secrets.APP_VERSION }}"
-          git push origin main
+          git commit -m "Update APP_VERSION"
+          git push origin master
       - name: Commit and Push Changes
         uses: actions-js/push@master
         with:
