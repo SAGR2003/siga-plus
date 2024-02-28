@@ -8,6 +8,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -30,16 +34,19 @@ jobs:
           password: ${{ secrets.DOCKER_PASS }}
       - name: Update version in helm repo
         run: |
-          git clone https://github.com/SAGR2003/helm-sigaplus
+          git clone https://github.com/SAGR2003/helm-sigaplus.git
           cd helm-sigaplus/helm
-          sed -i "s/APP_VERSION:$((${{ secrets.APP_VERSION }} - 1))/tag: ${{ secrets.APP_VERSION }}/" values.yaml
+          sed -i "s/APP_VERSION:$((${{ secrets.APP_VERSION }} - 1))/APP_VERSION: ${{ secrets.APP_VERSION }}/" values.yaml
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
+          git add values.yaml
+          git commit -m "Update APP_VERSION to ${{ secrets.APP_VERSION }}"
+          git push origin main
       - name: Commit and Push Changes
         uses: actions-js/push@master
         with:
           directory: helm-sigaplus
-          github_token: ${{ secrets.SIGAPLUS_TOKEN }}
+          github_token: ${{ secrets.REPO_TOKEN }}
           repository: SAGR2003/helm-sigaplus
           message: Update app version to ${{ secrets.APP_VERSION }}
       - name: Update app version secret
