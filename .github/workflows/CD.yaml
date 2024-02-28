@@ -23,8 +23,15 @@ jobs:
         name: Build & push Docker image
         with:
           image: sagr2003/sigaplus
-          tags: latest
+          tags: ${{ secrets.APP_VERSION }}
           registry: docker.io
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
+      - name: Update Version Number
+        uses: hmanzur/actions-set-secret@v2.0.0
+        with:
+          name: 'APP_VERSION'
+          value: $((${{ secrets.APP_VERSION }} + 1))
+          repository: sagr2003/siga-plus
+          token: ${{ secrets.SIGAPLUS_TOKEN}}
