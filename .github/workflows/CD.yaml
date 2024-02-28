@@ -1,7 +1,7 @@
 name: CD
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,7 +28,21 @@ jobs:
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
-      - name: Update Version Number
+      - name: Update version in helm repo
+        run: |
+          git clone https://github.com/SAGR2003/helm-sigaplus
+          cd helm-sigaplus/helm
+          sed -i "s/APP_VERSION:$((${{ secrets.APP_VERSION }} - 1))/tag: ${{ secrets.APP_VERSION }}/" values.yaml
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Commit and Push Changes
+        uses: actions-js/push@master
+        with:
+          directory: helm-sigaplus
+          github_token: ${{ secrets.SIGAPLUS_TOKEN }}
+          repository: SAGR2003/helm-sigaplus
+          message: Update app version to ${{ secrets.APP_VERSION }}
+      - name: Update app version secret
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
           name: 'APP_VERSION'
