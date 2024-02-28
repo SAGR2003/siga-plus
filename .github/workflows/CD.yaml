@@ -1,0 +1,30 @@
+name: CD
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2.9.0
+      - name: Execute Gradle build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bootJar
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image
+        with:
+          image: sagr2003/sigaplus
+          tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
