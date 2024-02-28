@@ -45,4 +45,8 @@ public class StudentController {
         return "OK :)";
     }
 
+    @GetMapping("/nuevafun")
+    private String nuevaFuncionalidad(){
+        return "Nueva funcionalidad :)";
+    }
 }
