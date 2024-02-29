@@ -47,6 +47,6 @@ public class StudentController {
 
     @GetMapping("/nuevafun")
     private String nuevaFuncionalidad(){
-        return "Nueva funcionalidad ._.";
+        return "Nueva funcionalidad .-.";
     }
 }
